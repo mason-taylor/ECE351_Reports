@@ -1,0 +1,117 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Mason Taylor
+% ECE 351 - 51
+% Lab 1
+% 9/9/2019
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% DOCUMENT PREAMBLE %%%
+\documentclass[12pt]{report}
+\usepackage[english]{babel}
+%\usepackage{natbib}
+\usepackage{url}
+\usepackage[utf8x]{inputenc}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\graphicspath{{images/}}
+\usepackage{parskip}
+\usepackage{fancyhdr}
+\usepackage{vmargin}
+\setmarginsrb{3 cm}{2.5 cm}{3 cm}{2.5 cm}{1 cm}{1.5 cm}{1 cm}{1.5 cm}
+
+\title{Lab \#1}								
+% Title
+\author{ Mason Taylor}						
+% Author
+\date{9 September 2019}
+% Date
+
+\makeatletter
+\let\thetitle\@title
+\let\theauthor\@author
+\let\thedate\@date
+\makeatother
+
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{\theauthor}
+\lhead{\thetitle}
+\cfoot{\thepage}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{titlepage}
+	\centering
+\begin{center}    
+    \textsc{\Large Signals \& Systems Lab}\\[2.0 cm]	
+    \textsc{\Large ECE 351 - 51 }\\[0.5 cm]
+    \textsc{\small Phillip Hagen }
+\end{center}
+	\rule{\linewidth}{0.4 mm} \\[0.4 cm]
+	{ \huge \bfseries \thetitle}\\
+	\rule{\linewidth}{0.4 mm} \\[1.5 cm]
+	
+	\begin{minipage}{0.4\textwidth}
+		\begin{flushleft} \large
+		%	\emph{Submitted To:}\\
+		%	Name\\
+          % Affiliation\\
+           %contact info\\
+			\end{flushleft}
+			\end{minipage}~
+			\begin{minipage}{0.4\textwidth}
+            
+			\begin{flushright} \large
+			\emph{Submitted By :} \\
+			\theauthor  \\
+			\thedate
+		\end{flushright}
+           
+	\end{minipage}\\[2 cm]
+    
+    
+    
+    
+	
+\end{titlepage}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\tableofcontents
+\pagebreak
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\renewcommand{\thesection}{\arabic{section}}
+\section{Introduction}
+The purpose of this lab to introduce the usage of Jupyter notebook and python for calculations, plotting, and simulation needs of future lab projects.
+
+\section{Methodology}
+This simple lab will only require testing various examples of python code in the Jupyter notebook interpreter. We will look at variables, comments, arrays and lists, plotting, For each of the examples, we simply take the code sample from the lab handout, run it, ensure it works as expected, and explain a bit about what each section is demonstrating.
+
+\section{Results}
+The full results of the lab will be attached as an appendix to the end. To summarize, each of the code samples was run consecutively in the Jupyter interpreter. Each code sample ran without errors and returned the expected results. We examined the following:
+\begin{itemize}
+\item \textbf{Variables:} There are no data types in python, simple declaration and initialization of variables is done in one step. 
+\item \textbf{Lists \& arrays:} Lists in python are much like arrays in other languages, but they are not typed and can store a wide variety of data. Libraries like numpy can extend the functionality to offer other functions.
+\item \textbf{Plotting:} Using matplotlib and numpy, very complex, multi-function plots and subplots can be generated, on par with what can be done in matlab.
+\end{itemize}
+
+\section{Issues \& Errors}
+I did not encounter any errors with the python and Jupyter part of the lab. However, I have had difficulty with how to export and format the Jupyter notebook for sharing. I was unable to get useful LaTeX out of Jupyter despite using the download as LaTeX option. Thus, if this report is to be written in LaTeX, I am not sure how to combine and incorporate the code directly in the report in an efficient way.
+
+\section{Questions}
+\begin{enumerate}
+    \item \textbf{For which course are you most excited in your degree? Which course have you enjoyed the most so far?}
+    
+    I am looking forward to taking an AI course like Evolutionary Computing. I also think that Electricity and Magnetism would be a fun course to take since that was my favorite part of Physics 212, which has been my favorite course to date.
+    
+    \item \textbf{Leave any feedback on the clarity of the purpose, deliverables, and tasks for this lab.}
+    
+    The tasks and purpose of in the lab manual where clear and easy to follow, however, the report deliverables seem to suggest that the report and the python code/results should be combined into one. I searched for a while, but I was unable to find an efficient way to do so. I would like to have been able to create my report in Jupyter notebook, adding sections and explanations with the code and results already embedded. However, I have settled with doing them separate and turning in the .ipynb and .tex. Also, I was somewhat unsure on the expectations with the python portion, i.e. how much explanation is required for each section, or any experimentation or modification we should be doing. Based on the requirements, I think what I did is fine, I am just not sure if I am doing a bunch or superfilous work, or barely scraping by.
+\end{enumerate}
+
+\newpage
+
+ 
+\end{document}
