@@ -1,0 +1,494 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Mason Taylor
+% Signals & Systems Lab
+% Final Project
+% 12/7/2019
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[12pt]{report}
+\usepackage[english]{babel}
+\usepackage{url}
+\usepackage[utf8x]{inputenc}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\graphicspath{{images/}}
+\usepackage{parskip}
+\usepackage{fancyhdr}
+\usepackage{vmargin}
+\usepackage{listings}
+\usepackage{geometry}
+\usepackage{fancyvrb}
+\usepackage{xcolor}
+\usepackage{adjustbox}
+\usepackage{titlesec}
+\usepackage{hyperref}
+\usepackage{tikz}
+\usepackage[american]{circuitikz}
+
+
+
+\title{Final Project}
+\date{12/7/2019}
+\author{Mason Taylor}
+
+% Setup for chapter titles
+\titleformat{\chapter}
+    {\normalfont\LARGE\bfseries}
+    {\thechapter}
+    {1em}
+    {}
+    [\hrule]
+    
+\titlespacing*{\chapter}
+   {0pt}% left
+   {5pt}% before sep
+   {0pt}% after sep
+
+\renewcommand{\clearpage}{}
+\renewcommand{\cleardoublepage}{}
+
+% Syntax highlighting colors
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codeblue}{rgb}{0,0,0.82}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{codeorange}{rgb}{0.75,0.4,0.0}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+% Commands for Pandoc Conversion
+\providecommand{\tightlist}{%
+\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+
+% Colors for the hyperref package
+\definecolor{urlcolor}{rgb}{0,.145,.698}
+\definecolor{linkcolor}{rgb}{.71,0.21,0.01}
+\definecolor{citecolor}{rgb}{.12,.54,.11}
+
+% Exact colors from NB
+\definecolor{incolor}{rgb}{0.0, 0.0, 0.5}
+\definecolor{outcolor}{rgb}{0.545, 0.0, 0.0}
+
+%Listing colors
+\lstdefinestyle{mystyle}{
+backgroundcolor=\color{backcolour},   
+commentstyle=\itshape\color{codegray},
+keywordstyle=\color{codegreen},
+numberstyle=\tiny\color{codepurple},
+stringstyle=\color{codeorange},
+identifierstyle=\color{codeblue},
+basicstyle=\ttfamily\footnotesize,
+breakatwhitespace=false,         
+breaklines=true,                 
+captionpos=b,                    
+keepspaces=true,                 
+numbers=none,                    
+numbersep=5pt,                  
+showspaces=false,                
+showstringspaces=false,
+showtabs=false,                  
+tabsize=2
+}
+\lstset{style=mystyle}
+
+% Define a nice break command that doesn't care if a line doesn't already exist.
+\def\br{\hspace*{\fill} \\* }
+% Math Jax compatibility definitions
+\def\gt{>}
+\def\lt{<}
+\let\Oldtex\TeX
+\let\Oldlatex\LaTeX
+\renewcommand{\TeX}{\textrm{\Oldtex}}
+\renewcommand{\LaTeX}{\textrm{\Oldlatex}}
+
+
+
+% Prevent overflowing lines due to hard-to-break entities
+\sloppy 
+% Setup hyperref package
+\hypersetup{
+breaklinks=true,  % so long urls are correctly broken across lines
+colorlinks=true,
+urlcolor=urlcolor,
+linkcolor=linkcolor,
+citecolor=citecolor,
+}
+\makeatletter
+\let\thetitle\@title
+\let\reptitle\@title
+\let\theauthor\@author
+\let\thedate\@date
+\makeatother
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{\theauthor}
+\lhead{\reptitle}
+\cfoot{\thepage}
+\fancypagestyle{plain}
+
+\setmarginsrb{3 cm}{2.5 cm}{3 cm}{2.5 cm}{1 cm}{1.5 cm}{1 cm}{1.5 cm}
+
+
+
+
+    \begin{document}
+    
+    
+\addtolength{\topmargin}{-1cm}
+\setlength{\headsep}{0.2in}
+\setlength{\textheight}{9.3in}
+\begin{titlepage}
+\centering
+\begin{center}    
+\textsc{\Large Signals \& Systems Lab}\\[2.0 cm]	
+\textsc{\Large ECE 351 - 51}\\[0.5 cm]
+\textsc{\small Instructor: Dr. Dennis Sullivan}\\[0.5 cm]
+\textsc{\small Lab TA: Phillip Hagen}
+\end{center}
+\rule{\linewidth}{0.4 mm} \\[0.4 cm]
+{ \huge \bfseries \thetitle}\\
+\rule{\linewidth}{0.4 mm} \\[1.5 cm]
+
+\begin{minipage}{0.4\textwidth}
+\begin{flushleft} \large
+%	\emph{Submitted To:}\\
+%	Name\\
+% Affiliation\\
+%contact info\\
+\end{flushleft}
+\end{minipage}~
+\begin{minipage}{0.4\textwidth}
+
+\begin{flushright} \large
+\emph{Prepared By :} \\
+\theauthor  \\
+\thedate
+\end{flushright}  
+\end{minipage}\\[2 cm]
+\end{titlepage}
+\tableofcontents
+\pagebreak
+
+
+    
+\hypertarget{introduction}{%
+\chapter{Introduction}\label{introduction}}
+
+In this project we are given data from a high precision position sensor.
+Unfortunately, various sources of noise are causing the signal to be
+unusable. We will be designing and simulating an analog filter to remove
+the noise and allow the position data to be accurately read.
+
+\hypertarget{methodology}{%
+\chapter{Methodology}\label{methodology}}
+
+We have a sampling of the recorded sensor data with the noise present.
+We will use Fourier Transforms to find the main frequencies of noise and
+the desired frequencies containing the positioning data. Once these
+frequencies are found, we can set the center frequency and sharpness of
+our bandpass filter. With the filter characteristics, we can then test
+the filter by simulating what the signal will look like when put through
+the filter and again check the frequencies that are present and ensure
+the noise has been attenuated and the desired data has not. The steps
+are:
+
+\hypertarget{task-1}{%
+\section{Task 1}\label{task-1}}
+
+Identify the frequencies of noise present, and the frequencies of the
+desired signal.
+
+\hypertarget{task-2}{%
+\section{Task 2}\label{task-2}}
+
+Design a Bandpass filter that will attenuate the noise while leaving the
+desired frequency essentially unchanged.
+
+\hypertarget{task-3}{%
+\section{Task 3}\label{task-3}}
+
+Filter the signal sample using the bandpass characteristics to verify the positioning data is coming out clean and undisturbed.
+
+\hypertarget{task-4}{%
+\section{Task 4}\label{task-4}}
+
+Perform analysis on the filtered signal and ensure that the magnitude of
+desired frequencies are relatively unchanged while the magnitude of
+primary noise frequencies are heavily attenuated.
+
+\pagebreak
+
+\hypertarget{equations}{%
+\chapter{Equations}\label{equations}}
+
+The only equation we will need is the transfer function of a
+bandpass filter. We will use this to calculate the values of the the
+resistor, inductor, and capacitor components for the bandpass filter.
+
+The general form of the transfer function for a bandpass filter is:
+
+$$ H(s) = \frac{k\beta s}{s^2+\beta s + w_0^2} $$
+
+Where $w_0$ is the center frequency of the filter, and the bandwidth is $\beta$. Once we find the symbolic transfer function of the RLC bandpass, we can use the general form to calculate the values of the passive components.
+
+\hypertarget{results}{%
+\chapter{Results}\label{results}}
+
+\hypertarget{task-1-1}{%
+\section{Task 1}\label{task-1-1}}
+
+    \begin{figure}[h]
+\begin{center}
+\adjustimage{max size={\linewidth}}{output_3_0.png}
+\end{center}
+\caption{A sample of the signal directly from the sensor. Note how the noise completely masks the desired signal.}
+\end{figure}
+    
+This is the signal sample that will be used to design and test the
+filter. As seen, it is difficult to discern what the positioning data
+even looks like using the sample above. However, this sample is perfect
+for analysis of the noise present in the signal. This will allow us to
+characterize the noise (as well as the desired signals) to ensure the
+filter works as desired.
+\pagebreak
+\begin{figure}[h]
+\begin{center}
+\adjustimage{max size={\linewidth}}{output_5_0.png}
+\end{center}
+\caption{These frequency spectrum plots show the range of noise frequencies and the desired signal frequencies present in the raw signal.}
+\end{figure}
+    
+The full spectrum frequency plot is shown at the top. As seen, there are
+various large spikes spread throughout the range. Note that the
+frequencies less than 0 are simply mirroring the frequencies above 0.
+Also, we can see the largest spike (it appears to be near 0 due to the
+large scale of the plot) with magnitude of about 1.2, which is our
+positioning data.
+
+Looking at the next plot down, we can see that the desired frequencies
+from the position monitoring system are spread throughout the range 1.8
+kHz - 2.0 kHz. There are major spikes at 1.8 kHz, 1.9 kHz and 2.0 kHz,
+with some other significant spikes centered around 1.9 kHz. Thus, we
+start with the main objective of preserving these signals (specifically,
+attenuating them less than -0.3 dB) and then try to attenuate the others
+as much as possible.
+
+In the low frequency spectrum, we can see a sharp spike around 50-60 Hz,
+this signature matches the low frequency vibration that was identified
+in the building ventilation system. We need to ensure that the 50-60 Hz vibration frequencies are
+attenuated by at least -30 dB per the specifications.
+
+In the high frequency range, we can see that there is a significant
+amount of noise around 50 kHz, likely due to the switching amplifier.
+This noise should be attenuated by at least -21 dB according to the
+specifications. Some other minor sources of noise are apparent at around
+75 kHz and more around 175 kHz. The sources of noise above 100 kHz should be almost
+100\% attenuated (i.e. final magnitudes of less than 0.05 V).
+
+\hypertarget{task-2-1}{%
+\section{Task 2}\label{task-2-1}}
+
+Knowing the main frequencies of the noise, we  can now design the analog filter circuit to reduce the noise at these frequencies. Our circuit will be an  RLC bandpass filter.
+
+\begin{figure}[h!]
+        \begin{center}
+            \begin{circuitikz}
+                \draw (0,0)
+                to[short, o-] (2,0);
+                
+                \draw (0,2)
+                to[short, o-] (1,2)
+                to[R=$R$] (4,2)
+                to[L=$L$] (4,0);
+                
+                \draw (0,2)
+                to [open, v=$V_{in}$] (0,0);
+                
+                \draw (4,2)
+                to[short] (6,2)
+                to[C=$C$] (6,0)
+                to[short] (2,0);
+                
+                \draw (6,2)
+                to[short, -o] (8,2);
+                
+                \draw (6,0)
+                to[short, -o] (8,0);
+                
+                \draw (8,0)
+                to [open, v<=$V_{out}$] (8,2);
+                
+            \end{circuitikz}
+            \caption{The RLC bandpass filter that will be used to filter the signal.}
+        \end{center}
+    \end{figure}
+    
+The circuit has the following Laplace domain transfer function:
+$$ H(s) = \frac{\frac{1}{RC}s}{s^2+\frac{1}{RC}s+\frac{1}{LC}} $$
+This gives use the relations to find the parameters we need for the circuit:
+$$ w_0 = \sqrt_{\frac{1}{LC}} $$
+$$ \beta = \frac{1}{RC} $$
+
+We set $w_0$ to $1.9 k \times 2\pi rad/s$  (that is, 1.9 kHz, in the center of the desired range) and then found commonly available inductor and capacitor values that fit this requirement. Next, we needed to adjust the bandwidth to ensure the signals in the desired frequency range are not attenuated more than the maximum of 0.3 dB. We use the resistor to adjust bandwidth since we already set the inductor and capacitor values. We could easily use these relations to change the sizes of the inductor/capacitor and resistor to satisfy power requirements if these were given. \\
+\pagebreak
+\\
+It was found that the following passive components will satisfy the requirements of the filter. These components were specifically chosen to be commonly available values.
+
+$$ R = 3.3 k\Omega \pm 5\% $$
+$$ L = 150 mH \pm 2\% $$
+$$ C = 47 nF \pm 2\% $$
+
+Note that the tolerances are tighter than usual on the inductor and capacitor. This is due to the inductor and capacitor values setting the center frequency of the filter, and this needed to be almost precisely 1.9 kHz to avoid attenuating any of the desired positioning data.
+
+
+
+\hypertarget{task-3-1}{%
+\section{Task 3}\label{task-3-1}}
+
+    \begin{figure}[h!]
+\begin{center}
+\adjustimage{max size={\linewidth}}{output_7_1.png}
+\end{center}
+\caption{This full bode plot shows how the RLC filter behaves over a large range of frequencies.}
+\label{fig:fullbode}
+\end{figure}
+
+The bode plot in Figure \ref{fig:fullbode} shows the frequency response of the RLC bandpass filter. The filter has a center frequency of 1.9 kHz and the falloff is tuned so that the attenuation in the desired frequency range is less than -0.3 dB.
+
+\pagebreak
+
+    \begin{figure}[h!]
+\begin{center}
+\adjustimage{max size={\linewidth}}{output_9_0.png}
+\end{center}
+\label{fig:bodedes}
+\caption{The bode plot of the filter in the desired frequency range.}
+\end{figure}
+
+    
+In the Figure above, we can see the frequencies in the entire band of
+positioning sensor data are preserved well with a maximum attenuation of
+around -0.16 dB.
+
+\pagebreak
+
+    \begin{figure}[h]
+\begin{center}
+\adjustimage{max size={\linewidth}}{output_11_1.png}
+\end{center}
+\label{fig:lowfreqbode}
+\caption{The bode plot of the filter in the low frequency range.}
+\end{figure}
+    
+In the low frequency spectrum, we can see that the main source of noise
+(the vibration around 60 Hz) is attenuated by more than -30 dB (around
+-35 dB). This satisfies the low frequency specification.
+
+\pagebreak
+
+    \begin{figure}[h]
+\begin{center}
+\adjustimage{max size={\linewidth}}{output_13_0.png}
+\end{center}
+\label{fig:highfreqbode}
+\caption{The bode plot of the filter in the high frequency range.}
+\end{figure}
+    
+In the high frequency spectrum, we can see that the switching amplifier
+noise around 50 kHz will be attenuated about -34 dB which is much
+greater attenuation than the requirement of at least -21 dB.
+\pagebreak
+
+    \begin{figure}[h]
+\begin{center}
+\adjustimage{max size={\linewidth}}{output_15_0.png}
+\end{center}
+\label{fig:uhighfreqbode}
+\caption{The bode for the filter response in the frequency range over 100 kHz}
+\end{figure}
+    
+In the ultra-high frequency range above 100 kHz, we can see that the
+attenuation is at least -40 dB and is greater than -50 dB at around 400
+kHz. The requirement is that any noise magnitudes in this frequency
+range would be no greater than 0.05 V. Noise magnitudes in this range
+were as high as 0.3 in the original signal (around 180 kHz). Multiplying this by the
+maximum amplitude of the signal (16 V) and then attenuating this by -40
+dB gives:
+
+\[ 0.3\times 16 \times 10^{\frac{-40}{20}} = 0.048 V \]
+
+Thus, the maximum possible magnitude of the high frequency noise after
+passing through the filter is 0.048 V (actual noise magnitudes would be significantly less as attenuation at 180 kHz is around -45 dB, this number was calculated for demonstration of meeting specifications in the worst possible case). This satisfies the requirement of
+being less than 0.05 V.
+
+\pagebreak
+
+\hypertarget{task-4-1}{%
+\section{Task 4}\label{task-4-1}}
+
+    \begin{figure}[h]
+\begin{center}
+\adjustimage{max size={\linewidth}}{output_17_0.png}
+\end{center}
+
+\caption{The filtered signal after being sent through the designed bandpass filter.}
+\end{figure}
+    
+    Mathematically we can test the filter by calculating the response after putting the noisy input signal into the transfer function of the RLC filter. The results are shown in the above figure. This is what the position data should look like after being put through the filter and removing most of the noise. We will now analyze the frequency components once again and ensure the noise is down to tolerable levels.
+    
+    \begin{figure}[h]
+\begin{center}
+\adjustimage{max size={\linewidth}}{output_18_0.png}
+\end{center}
+\caption{The frequency components of the filtered signal.}
+\end{figure}
+    
+    \pagebreak
+    
+As seen in the following frequency spectrum plots, the filtered signal is
+now much cleaner than the original signal. The full spectrum shows
+clearly how the original signal was attenuated very little, while
+everything else was nearly completely eliminated. In the high frequency spectrum, we can see that the 50 kHz amplifier noise has been attenuated such that it is only marginally detectable. In the low frequency
+spectrum, the 60 Hz vibration is only slightly visible, and other
+minor noise above 1 kHz is about the same. Thus, we can conclude the filter works as designed and meets the specifications set forth for the project.
+
+\pagebreak
+
+\hypertarget{questions}{%
+\chapter{Questions}\label{questions}}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \textbf{Earlier this semester, you were asked what you personally
+  wanted to get out of taking this course. Do you feel like that
+  personal goal was met? Why or why not?} \br \br 
+  I wanted to get some more experience with using python to simulate and model systems. That is exactly what we did this semester! I found this lab fun most of the time (except when I had to stay till 9:30!), and I have already used some of the concepts in the lab for other homework and lab projects.
+\end{enumerate}
+
+\hypertarget{conclusion}{%
+\chapter{Conclusion}\label{conclusion}}
+
+In this project, we were given a signal from a high precision position
+sensor. The issue with the signal is various noise sources are ruining
+the position data. The task was to identify the frequencies of these
+noise sources and design a filter to remove the noise and leave the
+position data undisturbed. The frequencies of the low frequency
+vibration and the high frequency power supply noise were identified. An
+analog filter was designed and tested with simulation.  The filter was found to be working as desired. The noise was filtered, leaving the desired data
+nearly unchanged. All that remains is to build a few test circuits and
+verify the filter works as expected under real conditions and that
+the tolerances of the passive components are strict enough to maintain
+the requirements. Unfortunately, in the tests performed, the maximum
+allowable tolerances that keep the circuit within the specifications are
+$\pm 2\% $ for the inductor and capacitor and $\pm 5\% $ for the
+resistor. This means that the inductor and capacitor must be carefully
+picked to either balance out, or both be very close to the calculated value. This demonstrates
+one issue that may appear in real circuits that is not accounted for in
+simulation.
+
+    % Add a bibliography block to the postdoc
+    
+    \pagebreak
+    
+    \end{document}
